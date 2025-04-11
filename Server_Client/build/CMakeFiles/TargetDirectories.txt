@@ -1,0 +1,4 @@
+/mnt/i/projects/lab_data_chain/Server_Client/build/CMakeFiles/client.dir
+/mnt/i/projects/lab_data_chain/Server_Client/build/CMakeFiles/server.dir
+/mnt/i/projects/lab_data_chain/Server_Client/build/CMakeFiles/edit_cache.dir
+/mnt/i/projects/lab_data_chain/Server_Client/build/CMakeFiles/rebuild_cache.dir

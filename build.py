@@ -52,5 +52,5 @@ for path, cmd in runList:
 print("Any input to kill processes")
 input()
 
-#for proc in proclist:
-#    os.killpg(os.getpgid(proc.pid), signal.SIGKILL)  # или signal.SIGTERM
+for proc in proclist:
+    os.killpg(os.getpgid(proc.pid), signal.SIGKILL)  # или signal.SIGTERM

@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     socket.bind("tcp://*:" + server_port);
 
     // prepare some static data for responses
-    std::string good_req{"OK"};
+    std::string good_req{"OK Congrads"};
     std::string bad_req;
     std::string str;
 
@@ -38,12 +38,13 @@ int main(int argc, char* argv[]) {
     // Входные биты (пример)
     std::vector<uint8_t> inputBits(100);
 
-    generator.getData(inputBits);
+    
     std::cout << "Scoreboard" << std::endl;
 
     int counter = 0;
     for (int i = 0; i < 10; ++i) 
     {
+        generator.getData(inputBits);
         zmq::message_t request;
 
         // receive a request from client

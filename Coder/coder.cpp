@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
     socket.connect("tcp://localhost:" + client_port);
 
     // set up some static data to send
-    std::string data(100, '0');
+    std::string data(200, '0');
     char* char_data = nullptr;
 
     // model init
@@ -101,11 +101,15 @@ int main(int argc, char* argv[]) {
     for (auto request_num = 0; request_num < 10; ++request_num) 
     {
         generator.getData(inputBits);
+        for(int i = 0; i < 100; ++i)
+        {
+            std::cout << (uint32_t)inputBits[i] << " ";
+        }
         // Кодирование
         encoder.encode(inputBits, outputBits);
 
-        for (int i = 0; i < 100; ++i)
-            data[i] = (char)inputBits[i];
+        for (int i = 0; i < 200; ++i)
+            data[i] = (char)outputBits[i];
 
         socket.send(zmq::buffer(data), zmq::send_flags::none);
         

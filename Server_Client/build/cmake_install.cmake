@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/i/projects/lab_data_chain/Server_Client
+# Install script for directory: /mnt/c/projects/lab_data_chain/Server_Client
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/mnt/i/projects/lab_data_chain/Server_Client/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/mnt/c/projects/lab_data_chain/Server_Client/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

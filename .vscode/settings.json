@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "functional": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/mnt/c/projects/lab_data_chain/Coder"
 }

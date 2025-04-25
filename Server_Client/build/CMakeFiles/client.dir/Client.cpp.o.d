@@ -1,5 +1,5 @@
 CMakeFiles/client.dir/Client.cpp.o: \
- /mnt/i/projects/lab_data_chain/Server_Client/Client.cpp \
+ /mnt/c/projects/lab_data_chain/Server_Client/Client.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/13/string \
  /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
@@ -152,9 +152,9 @@ CMakeFiles/client.dir/Client.cpp.o: \
  /usr/include/c++/13/bits/basic_ios.tcc \
  /usr/include/c++/13/bits/ostream.tcc /usr/include/c++/13/istream \
  /usr/include/c++/13/bits/istream.tcc /usr/include/zmq.hpp \
- /usr/include/zmq.h /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h \
- /usr/include/stdint.h /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
- /usr/include/x86_64-linux-gnu/bits/stdint-least.h /usr/include/signal.h \
+ /usr/local/include/zmq.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h /usr/include/signal.h \
  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
  /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
  /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \

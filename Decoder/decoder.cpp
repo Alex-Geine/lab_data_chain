@@ -309,7 +309,7 @@ int main(int argc, char* argv[]) {
         for(uint32_t i = 0; i < resultCode.size(); ++i)
             output[i] = resultCode[i] ? (char)1 : (char)0;
 
-            // send data to scoreboard
+        // send data to scoreboard
         socket_client.send(zmq::buffer(output), zmq::send_flags::none);
 
         std::cout << output << std::endl;

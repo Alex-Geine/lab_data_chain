@@ -36,9 +36,8 @@ int main(int argc, char* argv[]) {
     generator.setSeed(352357623);
 
     // Входные биты (пример)
-    std::vector<uint8_t> inputBits(100);
-
-    
+    std::vector<uint8_t> inputBits;
+        
     std::cout << "Scoreboard" << std::endl;
 
     int counter = 0;
@@ -50,6 +49,8 @@ int main(int argc, char* argv[]) {
         // receive a request from client
         socket.recv(request, zmq::recv_flags::none);
         str = request.to_string();
+
+        inputBits.resize(str.size());
 
         for (int i = 0; i < str.size(); ++i)
             if ((uint8_t)str[i] != inputBits[i])

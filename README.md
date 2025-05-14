@@ -10,3 +10,9 @@ Python:
 ```
 pip install pyzmq
 ```
+
+How to install armadillo
+
+```
+
+```

@@ -101,6 +101,7 @@ int main(int argc, char* argv[]) {
     for (auto request_num = 0; request_num < 10; ++request_num) 
     {
         generator.getData(inputBits);
+        std::cout << "initial bits: " << std::endl;
         for(int i = 0; i < 100; ++i)
         {
             std::cout << (uint32_t)inputBits[i] << " ";

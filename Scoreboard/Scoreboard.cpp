@@ -43,7 +43,6 @@ int main(int argc, char* argv[]) {
     int counter = 0;
     for (int i = 0; i < 10; ++i) 
     {
-        generator.getData(inputBits);
         zmq::message_t request;
 
         // receive a request from client
@@ -51,11 +50,12 @@ int main(int argc, char* argv[]) {
         str = request.to_string();
 
         inputBits.resize(str.size());
-
+        generator.getData(inputBits);
         for (int i = 0; i < str.size(); ++i)
+        {
             if ((uint8_t)str[i] != inputBits[i])
                 counter++;
-
+        }
         std::cout << "Reseive data string: " << std::endl;
         for (int i = 0;i < str.size();++i)
             std::cout << (uint32_t)str[i] << " ";

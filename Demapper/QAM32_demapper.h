@@ -176,6 +176,7 @@ struct QAM32_demapper
 
 void run(std::string& input_data, std::string& output_data)
 {
+    std::cout << "input data size: " << input_data.size() << std::endl;
     std::stringstream str(input_data);
 
     std::vector<double> v;
@@ -195,5 +196,12 @@ void run(std::string& input_data, std::string& output_data)
     double mod = sample_rate /double(symbol_speed);
     auto message = d.process(std::begin(v) + mod *3 * 10,std::end(v));
 
-    output_data = pack_bits_N_to_M<std::string>(5,8,message);
+    std::vector<int> out_data = pack_bits_N_to_M<std::vector<int>>((size_t)5, (size_t)8, message);
+
+    std::cout << "output int data:" << out_data.size() << std::endl;
+    for (auto& it: out_data)
+        std::cout << (uint32_t)it << " ";
+    std::cout << std::endl;
+
+    output_data =  std::string{0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 }

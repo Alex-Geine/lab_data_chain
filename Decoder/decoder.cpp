@@ -312,8 +312,6 @@ int main(int argc, char* argv[]) {
         // send data to scoreboard
         socket_client.send(zmq::buffer(output), zmq::send_flags::none);
 
-        std::cout << output << std::endl;
-
         // get rep from scoreboard and continue
         socket_client.recv(reply, zmq::recv_flags::none);
         std::cout << reply.to_string() << std::endl;

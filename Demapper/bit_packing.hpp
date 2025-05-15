@@ -54,7 +54,7 @@ ContainerOut pack_bits_N_to_M(size_t N, size_t M, ContainerIn c)
     size_t size = ceil_div(N * std::size(c), M);
     ContainerOut o(size);
 
-    pack_bits_N_to_M(N,M,std::begin(c),std::end(c),std::begin(o));
+    pack_bits_N_to_M(N, M, std::begin(c), std::end(c), std::begin(o));
     return o;
 }
 

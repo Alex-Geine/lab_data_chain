@@ -67,7 +67,7 @@ cmd_coder      = "./" + coderBin      + port_coder_mapper
 cmdListAll = [cmd_scoreboard, cmd_decoder, cmd_demapper, cmd_mapper, cmd_coder]
 
 # commands to run mapper -> demapper -> scoreboard
-port_demapper_scoreboard = "5557"
+port_demapper_scoreboard = " 5557 "
 
 cmd_mapper_1     = "./" + mapperBin     + port_mapper_demapper
 cmd_demapper_1   = "./" + demapperBin   + port_demapper_scoreboard + port_mapper_demapper
@@ -75,20 +75,23 @@ cmd_scoreboard_1 = "./" + scoreboardBin + port_demapper_scoreboard
 
 cmdListMapper = [cmd_scoreboard_1, cmd_demapper_1, cmd_mapper_1]
 
-run_flag = int(input("Type "0" to run all chain, "1" to run coder-decoder, "2" to run mapper-demapper. "))
+run_flag = int(input("Type 0 to run all chain, 1 to run coder-decoder, 2 to run mapper-demapper. "))
 
-runPathList
-runCmdList
+runPathList = []
+runCmdList = []
 
 if (run_flag == 0):       # All chain
     runPathList = pathList
     runCmdList  = cmdListAll
-else if (run_flag == 1):  # Coder-decoder chain
+elif (run_flag == 1):  # Coder-decoder chain
     runPathList = pathListCoderDecoder
     runCmdList  = cmdListCoder
-else if (run_flag == 2):  # Mapper-demapper chain
+elif (run_flag == 2):  # Mapper-demapper chain
     runPathList = pathListMapperDemapper
     runCmdList  = cmdListMapper
+else:
+    print("Wrong input!")
+    exit()
 
 runList = list(zip(runPathList, runCmdList))
 

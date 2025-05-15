@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     bool isAllChain = false;
 
     // Получаем данные из коммандной строки
-    if ((argc != 3) || (argc != 2))
+    if ((argc != 3) && (argc != 2))
     {
         std::cout << "Error! Arguments are bad!" << std::endl;
         for (int i = 0; i < argc; ++i)

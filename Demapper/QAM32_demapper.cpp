@@ -1,8 +1,6 @@
 #include "QAM32_demapper.h"
 #include <armadillo>
 #include <fstream>
-#include "../cpp_utils/testing/utils.hpp"
-#include "../cpp_utils/testing/bit_packing.hpp"
 
 using namespace arma;
 

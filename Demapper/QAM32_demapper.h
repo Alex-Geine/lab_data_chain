@@ -157,6 +157,9 @@ struct QAM32_demapper
 
         //std::cout << hypot(I,Q) / sqrt(2) << std::endl;
         //std::cout << atan2(Q,I) - M_PI/4.0 << std::endl;
+
+        std::cout << "amplitude evaluated: " << hypot(I, Q) / sqrt(2) << std::endl;
+        std::cout << "phase evaluated: " << atan2(Q, I) - M_PI / 4.0 << std::endl;
         singular_amplitude = hypot(I,Q) / sqrt(2);
         r.phase = atan2(Q,I) - M_PI/4.0;
 

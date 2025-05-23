@@ -67,11 +67,16 @@ void QAM32Modulator::generate_carriers(vector<double>& cos_wave, vector<double>&
     size_t num_samples = static_cast<size_t>(symbol_duration * sample_rate);
     cos_wave.resize(num_samples);
     sin_wave.resize(num_samples);
-
+    
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> phase_dist(0.0, 2 * M_PI);
+    double phi = phase_dist(gen)
+    
     for (size_t i = 0; i < num_samples; ++i) {
         double t = i / sample_rate;
-        cos_wave[i] = cos(2 * M_PI * carrier_freq * t);
-        sin_wave[i] = sin(2 * M_PI * carrier_freq * t);
+        cos_wave[i] = cos(2 * M_PI * carrier_freq * t + phi);
+        sin_wave[i] = sin(2 * M_PI * carrier_freq * t + phi);
     }
 }
 

@@ -23,11 +23,17 @@ class quadrature_receiver
     iir_filter lpf_1;
     iir_filter lpf_2;
 
+    std::vector<iir_filter> lpf_1_v;
+    std::vector<iir_filter> lpf_2_v;
+
+
     public:
 
     quadrature_receiver(double f, double sample_rate, double symbol_speed) :
     lpf_1(design_butterworth_low_pass_filter(symbol_speed * 1, sample_rate)),
     lpf_2(design_butterworth_low_pass_filter(symbol_speed * 1, sample_rate)),
+    lpf_1_v(4, design_butterworth_low_pass_filter(symbol_speed * 1, sample_rate)),
+    lpf_2_v(4, design_butterworth_low_pass_filter(symbol_speed * 1, sample_rate)),
     f(f),
     fd(sample_rate)
     {}
@@ -37,8 +43,17 @@ class quadrature_receiver
         auto v_inphase = 2*v * cos(2 * M_PI * f * i / fd + phase);
         auto v_quadr = -2*v * sin(2 * M_PI * f * i / fd + phase);
 
-        v_inphase = lpf_1(v_inphase);
-        v_quadr = lpf_2(v_quadr);
+        //v_inphase = lpf_1(v_inphase);
+        //v_quadr = lpf_2(v_quadr);
+
+        for (auto j = 0; j < lpf_1_v.size(); ++j)
+        {
+            v_inphase = lpf_1_v[j](v_inphase);
+        }
+        for (auto j = 0; j < lpf_2_v.size(); ++j)
+        {
+            v_quadr = lpf_2_v[j](v_quadr);
+        }
 
         ++i;
         return std::array{v_inphase,v_quadr};
@@ -132,15 +147,18 @@ struct QAM32_demapper
             // int index = offset + i * bit_segment_width + bit_segment_width / 2;
             // message[i] = process(I,Q);
 
-            I += (IQ[0][3*i + 0] + IQ[0][3*i + 1] - IQ[0][3*i + 2]) / 3.0;
-            Q += (IQ[1][3*i + 0] + IQ[1][3*i + 1] - IQ[1][3*i + 2]) / 3.0;
+            I += (IQ[0][(3*i + 0.5) * bit_segment_width] + IQ[0][(3 * i + 1.5) * bit_segment_width] - IQ[0][(3 * i + 2.5) * bit_segment_width]) ;
+            Q += (IQ[1][(3 * i + 0.5) * bit_segment_width] + IQ[1][(3 * i + 1.5) * bit_segment_width] - IQ[1][(3 * i + 2.5) * bit_segment_width]) ;
         }
 
+        I /= double(3*n);
+        Q /= double(3*n);
 
-        std::cout << hypot(I,Q) / sqrt(2) << std::endl;
-        std::cout << atan2(Q,I) - M_PI/4.0 << std::endl;
-        // singular_amplitude = hypot(I,Q) / sqrt(2);
-        // r.phase = atan2(Q,I) - M_PI/4.0;
+
+        //std::cout << hypot(I,Q) / sqrt(2) << std::endl;
+        //std::cout << atan2(Q,I) - M_PI/4.0 << std::endl;
+        singular_amplitude = hypot(I,Q) / sqrt(2);
+        r.phase = atan2(Q,I) - M_PI/4.0;
 
         return end;
     }
@@ -193,7 +211,9 @@ void run(std::string& input_data, std::string& output_data)
     QAM32_demapper d(f,sample_rate,symbol_speed);
 
     double mod = sample_rate /double(symbol_speed);
+
+    d.process_preambule(std::begin(v), 10);
     auto message = d.process(std::begin(v) + mod *3 * 10,std::end(v));
 
-    output_data = pack_bits_N_to_M<std::string>(5,8,message);
+    output_data = pack_bits_N_to_M<std::string>(5,1,message);
 }

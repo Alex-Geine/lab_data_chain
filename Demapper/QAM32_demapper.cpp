@@ -49,6 +49,7 @@ int main(int argc, char* argv[])
 
     for (auto request_num = 0; request_num < 10; ++request_num)
     {
+        // std::cout << "DEMAPPER. Run: " << request_num << std::endl;
         // receive a request from mapper
         socket_server.recv(request, zmq::recv_flags::none);
         input_data = request.to_string();
@@ -63,7 +64,7 @@ int main(int argc, char* argv[])
         socket_client.send(zmq::buffer(output_data), zmq::send_flags::none);
 
         socket_client.recv(reply, zmq::recv_flags::none);
-        std::cout << reply.to_string() << std::endl;
+        // std::cout << reply.to_string() << std::endl;
     }
     socket_client.close();
     socket_server.close();

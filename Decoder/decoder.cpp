@@ -301,6 +301,9 @@ int main(int argc, char* argv[]) {
         // send reply to coder
         socket_server.send(zmq::buffer("OK!"), zmq::send_flags::none);
         input_bits.resize(coder_data.size());
+
+        std::cout << "DECODER. Run:" << request_num <<  "\n";
+
         for (uint32_t i = 0; i < coder_data.size(); ++i)
             input_bits[i] = (coder_data[i] == (char)1) ? true : false;
 
@@ -308,13 +311,13 @@ int main(int argc, char* argv[]) {
         output.resize(resultCode.size());
         for(uint32_t i = 0; i < resultCode.size(); ++i)
             output[i] = resultCode[i] ? (char)1 : (char)0;
-
+        std::cout << "DECODER. Count corrected error: " << minMetrix << std::endl;
+        metrix.clear();
         // send data to scoreboard
         socket_client.send(zmq::buffer(output), zmq::send_flags::none);
 
         // get rep from scoreboard and continue
         socket_client.recv(reply, zmq::recv_flags::none);
-        std::cout << reply.to_string() << std::endl;
     }
     socket_client.close();
     socket_server.close();

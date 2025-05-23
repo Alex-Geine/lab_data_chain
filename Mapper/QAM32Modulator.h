@@ -6,10 +6,12 @@
 #include <random>
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 #include <sstream>
+
 #define M_PI 3.1415
 
-// Структура для хранения I/Q компонент
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ I/Q пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 struct IQPoint {
     double I;
     double Q;
@@ -18,11 +20,11 @@ struct IQPoint {
 class QAM32Modulator
 {
 
-    // Точки синхронизации (I, Q)
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (I, Q)
     IQPoint sync_point_positive{ 1.0, 1.0 };  // (1, 1)
     IQPoint sync_point_negative{ -1.0, -1.0 }; // (-1, -1)
 
-    const char map[6][6] =  //  Таблица кода Грея
+    const char map[6][6] =  //  пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
     {
         {-1,2,3,19,18,-1},
         {6,14,10,26,30,22},
@@ -32,33 +34,33 @@ class QAM32Modulator
         {-1,0,1,17,16,-1}
     };
 
-    // Параметры сигнала
-    double carrier_freq; // Частота несущей (Гц)
-    double sample_rate; // Частота дискретизации (Гц)
-    double symbol_duration; // Длительность символа (сек)
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    double carrier_freq; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ)
+    double sample_rate; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ)
+    double symbol_duration; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅ)
 
-    std::vector<IQPoint> generate_qam32_constellation(); // Создание карты созвездия QAM-32
+    std::vector<IQPoint> generate_qam32_constellation(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ QAM-32
 
-    uint8_t bits_to_symbol(const std::bitset<5>& bits); // Функция преобразования 5 бит в индекс символа с Грей-кодированием
+    uint8_t bits_to_symbol(const std::bitset<5>& bits); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 5 пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
-    std::vector<IQPoint> map_bits_to_symbols(const std::vector<uint8_t>& bits); // Преобразование потока битов в символы
+    std::vector<IQPoint> map_bits_to_symbols(const std::vector<uint8_t>& bits); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
-    void generate_carriers(std::vector<double>& cos_wave, std::vector<double>& sin_wave);   // Генерация квадратурных несущих
+    void generate_carriers(std::vector<double>& cos_wave, std::vector<double>& sin_wave);   // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
-    std::vector<double> modulate_qam32( // Модуляция QAM32
+    std::vector<double> modulate_qam32( // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ QAM32
         const std::vector<IQPoint>& symbols,
         const std::vector<double>& cos_wave,
         const std::vector<double>& sin_wave
     );
 
-    std::vector<IQPoint> add_sync_sequence( //  Добавление приамбулы
+    std::vector<IQPoint> add_sync_sequence( //  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         const std::vector<IQPoint>& data_symbols,
-        int num_sync_pairs = 10 // Количество пар синхросимволов
+        int num_sync_pairs = 10 // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     );
 
-    std::vector<double> add_awgn(const std::vector<double>& signal, double snr_db); //  Добавление шума в дБ
+    std::vector<double> add_awgn(const std::vector<double>& signal, double snr_db); //  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ
 
-    void writeVectorToFile(const std::vector<double>& vec, const std::string& filename);    //  Запись в файл
+    void writeVectorToFile(const std::vector<double>& vec, const std::string& filename);    //  пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
 
 public:
 

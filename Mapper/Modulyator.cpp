@@ -70,6 +70,7 @@ int main(int argc, char* argv[])
 
     for (auto request_num = 0; request_num < 10; ++request_num)
     {
+        // std::cout << "MAPPER. Run: "<< request_num << std::endl;
         // If all chain
         if (isAllChain)
         {

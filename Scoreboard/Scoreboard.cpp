@@ -51,15 +51,17 @@ int main(int argc, char* argv[]) {
 
         inputBits.resize(str.size());
         generator.getData(inputBits);
+
         for (int i = 0; i < str.size(); ++i)
         {
             if ((uint8_t)str[i] != inputBits[i])
                 counter++;
         }
-        std::cout << "Reseive data string: " << std::endl;
-        for (int i = 0;i < str.size();++i)
-            std::cout << (uint32_t)str[i] << " ";
-        std::cout << std::endl;
+
+        std::cout << "SCOREBOARD. Run:" << i << "\n";
+        // for (int i = 0; i < str.size();++i)
+            // std::cout << (uint32_t)str[i] << " ";
+        // std::cout << std::endl;
 
         // send the reply to the client
         if (counter == 0)
@@ -68,6 +70,7 @@ int main(int argc, char* argv[]) {
         {
             bad_req = {"ERROR in data! Number of dumped bits: " + std::to_string(counter)};
             socket.send(zmq::buffer(bad_req), zmq::send_flags::none);
+            std::cout << bad_req << ", N: " << i << std::endl;
         }
         counter = 0;
     }

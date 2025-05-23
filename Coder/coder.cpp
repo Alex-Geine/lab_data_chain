@@ -101,11 +101,13 @@ int main(int argc, char* argv[]) {
     for (auto request_num = 0; request_num < 10; ++request_num) 
     {
         generator.getData(inputBits);
-        std::cout << "initial bits: " << std::endl;
-        for(int i = 0; i < 100; ++i)
-        {
-            std::cout << (uint32_t)inputBits[i] << " ";
-        }
+
+        //std::cout << "CODER. RUN: " << request_num << std::endl;
+        // for(int i = 0; i < inputBits.size(); ++i)
+        // {
+            // std::cout << (uint32_t)inputBits[i] << " ";
+        // }
+
         // Кодирование
         encoder.encode(inputBits, outputBits);
 
@@ -118,9 +120,9 @@ int main(int argc, char* argv[]) {
         zmq::message_t reply{};
         socket.recv(reply, zmq::recv_flags::none);
 
-        std::cout << "Received " << reply.to_string(); 
-        std::cout << " (" << request_num << ")";
-        std::cout << std::endl;
+        // std::cout << "CODER. Received " << reply.to_string(); 
+        // std::cout << " (" << request_num << ")";
+        // std::cout << std::endl;
     }
 
     socket.close();

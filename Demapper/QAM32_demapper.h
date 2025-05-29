@@ -10,6 +10,7 @@
 
 // #include "../cpp_utils/testing/utils.hpp"
 #include "bit_packing.hpp"
+#include "gnuplot_helper.hpp"
 
 
 class quadrature_receiver
@@ -71,6 +72,8 @@ class quadrature_receiver
             inphase[i] = v[0];
             quadrature[i] = v[1];
         }
+
+
 
         return std::array{inphase,quadrature};
     }
@@ -181,14 +184,32 @@ struct QAM32_demapper
 
         std::vector<int> message(n);
 
+        std::vector<double> I_v,Q_v;
+
         for (auto i = 0; i < n; ++i)
         {
             int index = offset + i * bit_segment_width + bit_segment_width / 2;
             auto I = IQ[0][index];
             auto Q = IQ[1][index];
 
+            I_v.push_back(I);
+            Q_v.push_back(Q);
+
             message[i] = process(I,Q);
         }
+
+        static int i = 0;
+        if (i == 0)
+        {
+            gnuplot_program p;
+            p.script = "set grid \n plot 'points.txt' using 1:2:(stringcolumn(3)) w labels, '-' w p\n";
+            
+            p.start();
+            p.plot_points(I_v.begin(), I_v.end(), Q_v.begin(), Q_v.end());
+
+            i++;
+        }
+
         
         return message;
     }

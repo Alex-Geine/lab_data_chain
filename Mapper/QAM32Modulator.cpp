@@ -251,7 +251,7 @@ int QAM32Modulator::run(const string& input_data, string& output_data)
     // Модуляция
     auto modulated_signal = modulate_qam32(symbols_with_sync, cos_wave, sin_wave);
 
-    const static double SNR = 5.0;
+    const static double SNR = 20.0;
     static bool flag = 1;
 
     if (flag)

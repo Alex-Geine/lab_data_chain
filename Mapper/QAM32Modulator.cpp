@@ -70,8 +70,10 @@ void QAM32Modulator::generate_carriers(vector<double>& cos_wave, vector<double>&
     
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> phase_dist(0.0, 2 * M_PI);
-    double phi = phase_dist(gen)
+    std::uniform_real_distribution<double> phase_dist(-M_PI, M_PI);
+    double phi = phase_dist(gen);
+
+    std::cout<<"phase: " << phi<<std::endl;
     
     for (size_t i = 0; i < num_samples; ++i) {
         double t = i / sample_rate;
@@ -128,7 +130,7 @@ vector<double> QAM32Modulator::add_awgn(const vector<double>& signal, double snr
     }
     signal_power /= signal.size();
 
-    std::cout << "Signal power: " << signal_power << std::endl;
+    // std::cout << "Signal power: " << signal_power << std::endl;
 
     // Преобразуем SNR из дБ в линейный масштаб
     double snr_linear = pow(10.0, snr_db / 10.0);
@@ -136,9 +138,9 @@ vector<double> QAM32Modulator::add_awgn(const vector<double>& signal, double snr
     // Мощность шума
     double noise_power = signal_power / snr_linear;
 
-    std::cout << "snr_linear: " << snr_linear << std::endl;
+    // std::cout << "snr_linear: " << snr_linear << std::endl;
 
-    std::cout << "noise_power: " << noise_power << std::endl;
+    // std::cout << "noise_power: " << noise_power << std::endl;
 
     // signal power
     // noise power (after filer)
@@ -169,10 +171,10 @@ vector<double> QAM32Modulator::add_awgn(const vector<double>& signal, double snr
     filt_high(noise.begin(), noise.end(), noise_temp.begin());
     filt_low(noise_temp.begin(), noise_temp.end(), noise.begin());
 
-    std::ofstream fstr("noise.txt");
+    // std::ofstream fstr("noise.txt");
     
-    std::copy(noise.begin(),noise.end(),std::ostream_iterator<double>(fstr, "\n"));
-    fstr.close();
+    // std::copy(noise.begin(),noise.end(),std::ostream_iterator<double>(fstr, "\n"));
+    // fstr.close();
 
     noise_power = 0;
     for (const auto& sample : noise) {
@@ -180,9 +182,9 @@ vector<double> QAM32Modulator::add_awgn(const vector<double>& signal, double snr
     }
     noise_power /= noise.size();
 
-    std::cout << "Signal power noise noise: " << noise_power << std::endl;
-    std::cout << "Lin: " <<  snr_linear << std::endl;
-        std::cout << "signal_power: " <<  signal_power << std::endl;
+    // std::cout << "Signal power noise noise: " << noise_power << std::endl;
+    // std::cout << "Lin: " <<  snr_linear << std::endl;
+    //     std::cout << "signal_power: " <<  signal_power << std::endl;
 
     double K = std::sqrt(signal_power / noise_power / snr_linear) ;
     std::cout << "K: " << K << std::endl;
@@ -195,7 +197,7 @@ vector<double> QAM32Modulator::add_awgn(const vector<double>& signal, double snr
         noise_power += sample * sample;
     }
     noise_power/=noise.size();
-    std::cout << "Signal power noise N N: " << signal_power << std::endl;
+    // std::cout << "Signal power noise N N: " << signal_power << std::endl;
 
 
     for (int i = 0; i< signal.size(); i++) {
@@ -208,7 +210,7 @@ vector<double> QAM32Modulator::add_awgn(const vector<double>& signal, double snr
     }
     noise_power/=noise.size();
 
-    std::cout << "Signal power noise: " << noise_power << std::endl;
+    // std::cout << "Signal power noise: " << noise_power << std::endl;
 
     return noise_temp;
 }
@@ -240,7 +242,7 @@ int QAM32Modulator::run(const string& input_data, string& output_data)
     auto data_symbols = map_bits_to_symbols(bits);
 
     // Добавление синхропоследовательности (пример: 10 пар)
-    auto symbols_with_sync = add_sync_sequence(data_symbols, 10);
+    auto symbols_with_sync = add_sync_sequence(data_symbols, 20);
 
     // Генерация несущих
     vector<double> cos_wave, sin_wave;
@@ -249,7 +251,7 @@ int QAM32Modulator::run(const string& input_data, string& output_data)
     // Модуляция
     auto modulated_signal = modulate_qam32(symbols_with_sync, cos_wave, sin_wave);
 
-    const static double SNR = -20.0;
+    const static double SNR = 5.0;
     static bool flag = 1;
 
     if (flag)

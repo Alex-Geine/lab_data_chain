@@ -158,9 +158,9 @@ struct QAM32_demapper
         //std::cout << hypot(I,Q) / sqrt(2) << std::endl;
         //std::cout << atan2(Q,I) - M_PI/4.0 << std::endl;
 
-        std::cout << "amplitude evaluated: " << hypot(I, Q) / sqrt(2) << std::endl;
+        // std::cout << "amplitude evaluated: " << hypot(I, Q) / sqrt(2) << std::endl;
         std::cout << "phase evaluated: " << atan2(Q, I) - M_PI / 4.0 << std::endl;
-        singular_amplitude = hypot(I,Q) / sqrt(2);
+        // singular_amplitude = hypot(I,Q) / sqrt(2);
         r.phase = atan2(Q,I) - M_PI/4.0;
 
         return end;
@@ -215,8 +215,12 @@ void run(std::string& input_data, std::string& output_data)
 
     double mod = sample_rate /double(symbol_speed);
 
-    d.process_preambule(std::begin(v), 10);
-    auto message = d.process(std::begin(v) + mod *3 * 10,std::end(v));
+    d.process_preambule(std::begin(v), 20);
+    auto message = d.process(std::begin(v) + mod *3 * 20,std::end(v));
+    std::vector<int> bits;
+    bits = pack_bits_N_to_M<std::vector<int>>(5,1,message);
 
-    output_data = pack_bits_N_to_M<std::string>(5,1,message);
+    output_data.resize(bits.size());
+    for (uint32_t i = 0; i < bits.size(); ++i)
+        output_data[i] = bits[i] ? 1 : 0;
 }
